@@ -1,0 +1,42 @@
+<!-- Лабораторная работа N1 по дисциплине ЛОИС
+Выполнена студенткой группы 221703 БГУИР Пикановой А.Д.
+Выполнена студентом группы 221703 БГУИР Чернявским М.С.
+Гипертекстовая разметка интерфейса. -->
+
+<html>
+    <head>
+        <title>Formulas</title>
+        <link rel="stylesheet" href="style.css">
+        <meta charset="utf-8">
+    </head>
+
+    <body>
+        <div id="header">
+            <div id="logo" class="text">F O R M U L A S</div>
+        </div>
+        <div id="main">
+            <div id="input">
+                <div>
+                    <button class="button" id="operations_keyboard_button">Operations</button>
+                    <div id="operations_keyboard" style="display: none"></div>
+                </div>
+                <input placeholder="Enter Formula" id="main_field" name="text" type="text">
+                <div id="submit_and_depth">
+                    <button class="button" id="submit_button">Submit</button>
+                    <select id="depth_input" display="none">
+                        <option selected disabled> Choose depth of subformulas</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="canvas">
+                <div id="center_column" class="column"></div>
+            </div>
+        </div>
+
+        <div id="footer">
+            <div id="credits" class="text">Выполнили студенты группы 221703:<br> Пиканова А.Д. и Чернявский М.С.</div>
+        </div>
+        <script rel="script" src="script.js"></script>
+    </body>
+</html>
