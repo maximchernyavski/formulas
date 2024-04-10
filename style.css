@@ -73,6 +73,10 @@ body {
     overflow: auto;
 }
 
+#additional_language {
+    height: 36px;
+}
+
 #operations_keyboard {
     position: relative;
     left: 15px;

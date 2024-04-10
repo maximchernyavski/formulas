@@ -22,10 +22,13 @@ function initAlphabet() {
 
 const alphabet = new Set(initAlphabet());
 const operations = ['!', '∧', '∨', '➔', '~'];
+allowAdditionalLanguage = false;
 
 //Setting constants for easy access for all necessarily UI elements.
 const displayedOperationsKeyboard = document.getElementById('operations_keyboard');
 const operationsKeyboardButton = document.getElementById('operations_keyboard_button');
+const additionalOperations = document.getElementById('additional_operations');
+const additionalLanguageButton = document.getElementById('additional_language');
 const mainField = document.getElementById('main_field');
 const submitButton = document.getElementById('submit_button');
 const depthSelector = document.getElementById('depth_input');
@@ -39,6 +42,7 @@ window.addEventListener('load', () => {
 }, { once: true });
 
 operationsKeyboardButton.addEventListener('click', handleOperationKeyboardClick);
+additionalLanguageButton.addEventListener('click', handleAdditionalLanguageClick);
 depthSelector.addEventListener('focus', handleDepthSelectorFocus);
 depthSelector.addEventListener('change', handleDepthSelectorChange);
 submitButton.addEventListener('click', handleSubmitButtonClick);
@@ -53,7 +57,7 @@ class FormulaTree{
      * @param {*} text Text that will be placed as node formula.
      * @param {number} depth Depth of this node.
      */
-    constructor(text, depth = 0) {
+    constructor(text, depth = 1) {
         this.formula = text;
         this.depth = depth;
     };
@@ -107,7 +111,7 @@ class FormulaTree{
 
 class Formula{
     formula;
-    root;
+    root = null;
 
     /** @class Formula
      * @classdesc Class for creating, checking, processing formula and building tree of its subformulas.
@@ -211,12 +215,12 @@ class Formula{
      * Method checks for every possible situation for founded subformulas, hovewer if we spot the error,
      * we return null.
      */
-    buildTree(formula = this.formula, depth = 0) {
+    buildTree(formula = this.formula, depth = 1) {
         let ind = 0;
         let branch = null;
         // Checks for AF.
         if(formula[ind] != '(') { 
-            return (alphabet.has(formula[ind]) && !operations.includes(formula[ind + 1])) ? new FormulaTree(formula[ind], depth) : null;
+            return (alphabet.has(formula[ind]) && formula.length === 1) ? new FormulaTree(formula[ind], depth) : null;
         }
         let temp = this.getSubFormula(ind, formula); //Getting subformula.
         if(!temp.length) return null; //Checks if subformula is correct.
@@ -270,6 +274,13 @@ class Formula{
      * We check if formula is correct and if it is, we update formula fields, else null.
      */
     renewFormula(formula) {
+        if(!allowAdditionalLanguage){
+            let check = Array.from(formula);
+            if(check.some(el => {return ['∧', '∨', '➔'].includes(el)})){
+                outputField.innerHTML += 'Grammar failure.<br>';
+                return this.root = null;
+            }
+        };
         this.formula = formula;
         this.replaceOperations();
         if(this.validateAlphabet()) {
@@ -277,11 +288,11 @@ class Formula{
         }
         else{
             outputField.innerHTML += 'Grammar failure.<br>';
-            return null;
+            return this.root = null;
         }
         if(this.root === null) {
             outputField.innerHTML += 'Formula is wrong.<br>';
-            return null;
+            return this.root = null;
         }
         this.root.setMaxDepth();
         outputField.innerHTML += `Entered formula: ${this.formula} <br>`;
@@ -306,7 +317,7 @@ function handleDepthSelectorFocus(e) {
     e.preventDefault();
 
     for(let i = 1; i < 22; i += 1) {
-        if(i-1 <= formula.root.maxDepth) {
+        if(i <= formula.root.maxDepth) {
             depthSelector.options[i].style.display = 'block';
         }
         else{
@@ -327,6 +338,12 @@ function handleSubmitButtonClick(e) {
 
     depthSelector.style.display = formula.root === null ? 'none' : 'block';
     console.log('state');
+}
+
+function handleAdditionalLanguageClick(){
+    additionalOperations.style.display = additionalOperations.style.display === 'none' ? 'block' : 'none';
+    allowAdditionalLanguage = !allowAdditionalLanguage;
+    additionalLanguageButton.classList.toggle('active');
 }
 
 function handleOperationKeyboardClick() {
@@ -353,7 +370,7 @@ function createOperationsButton(symbol) {
 };
 
 function createOptions() {
-    for(let i = 0; i < 21; i += 1) {
+    for(let i = 1; i < 22; i += 1) {
         let opt = document.createElement('option');
         opt.value = i;
         opt.innerHTML = i;

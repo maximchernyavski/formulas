@@ -1,3 +1,8 @@
+// Лабораторная работа N1 по дисциплине ЛОИС
+// Выполнена студенткой группы 221703 БГУИР Пикановой А.Д.
+// Выполнена студентом группы 221703 БГУИР Чернявским М.С.
+// Классы отделенные от интерфейса для тестирования.
+
 function initAlphabet() {
   const alphabet = [];
 
@@ -5,7 +10,6 @@ function initAlphabet() {
       alphabet.push(String.fromCharCode(i));
   };
   alphabet.push('1', '0');
-  console.log('Alphabet was initialised');
 
   return alphabet;
 };
@@ -18,7 +22,7 @@ class FormulaTree{
   left = null;
   right = null;
 
-  constructor(text, depth = 0) {
+  constructor(text, depth = 1) {
       this.formula = text;
       this.depth = depth;
   };
@@ -107,12 +111,12 @@ class Formula{
       return [temp, ind];
   };
 
-  buildTree(formula = this.formula, depth = 0) {
+  buildTree(formula = this.formula, depth = 1) {
       let ind = 0;
       let branch = null;
 
       if(formula[ind] != '(') { 
-          return (alphabet.has(formula[ind]) && !operations.includes(formula[ind + 1])) ? new FormulaTree(formula[ind], depth) : null;
+        return (alphabet.has(formula[ind]) && formula.length === 1) ? new FormulaTree(formula[ind], depth) : null;
       }
       let temp = this.getSubFormula(ind, formula);
       if(!temp.length) return null;
