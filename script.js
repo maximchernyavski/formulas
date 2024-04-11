@@ -315,8 +315,10 @@ const formula = new Formula('');
 
 function handleDepthSelectorFocus(e) {
     e.preventDefault();
-
-    for(let i = 1; i < 22; i += 1) {
+    if(formula.root.maxDepth > depthSelector.options.length - 1){
+        createOptions(depthSelector.options.length, formula.root.maxDepth);
+    }
+    for(let i = 1; i < depthSelector.options.length; i += 1) {
         if(i <= formula.root.maxDepth) {
             depthSelector.options[i].style.display = 'block';
         }
@@ -369,12 +371,11 @@ function createOperationsButton(symbol) {
     return button;
 };
 
-function createOptions() {
-    for(let i = 1; i < 22; i += 1) {
+function createOptions(currValue = 1, endValue = 21) {
+    for(currValue; currValue <= endValue; currValue += 1) {
         let opt = document.createElement('option');
-        opt.value = i;
-        opt.innerHTML = i;
-        if(i > 10) opt.style.display = 'none';
+        opt.value = currValue;
+        opt.innerHTML = currValue;
         depthSelector.appendChild(opt);
     }
 };
