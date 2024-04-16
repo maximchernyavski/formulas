@@ -171,6 +171,54 @@ describe('Formula class', () => {
       expect(formula.root).toStrictEqual(null);
     });
 
+    it('handles elements after formula', () => {
+      let formula = new Formula('((A➔B)~(C∧D))A');
+      formula.root = formula.buildTree();
+      expect(formula.root).toStrictEqual(null);
+
+      formula = new Formula('((A➔B)~(C∧D))1');
+      formula.root = formula.buildTree();
+      expect(formula.root).toStrictEqual(null);
+
+      formula = new Formula('((A➔B)~(C∧D))0');
+      formula.root = formula.buildTree();
+      expect(formula.root).toStrictEqual(null);
+
+      formula = new Formula('((A➔B)~(C∧D))()');
+      formula.root = formula.buildTree();
+      expect(formula.root).toStrictEqual(null);
+
+      formula = new Formula('((A➔B)~(C∧D))(!A)');
+      formula.root = formula.buildTree();
+      expect(formula.root).toStrictEqual(null);
+    });
+
+    it('handles elements after second element of binary formula', () => {
+      let formula = new Formula('((A➔B)~(C∧D)A)');
+      formula.root = formula.buildTree();
+      expect(formula.root).toStrictEqual(null);
+
+      formula = new Formula('((A➔B)~(C∧D)(!A))');
+      formula.root = formula.buildTree();
+      expect(formula.root).toStrictEqual(null);
+      
+      formula = new Formula('((A➔B)~(C∧D)1)');
+      formula.root = formula.buildTree();
+      expect(formula.root).toStrictEqual(null);
+
+      formula = new Formula('((A➔B)~(C∧D)0)');
+      formula.root = formula.buildTree();
+      expect(formula.root).toStrictEqual(null);
+
+      formula = new Formula('((A➔B)~(C∧D)())');
+      formula.root = formula.buildTree();
+      expect(formula.root).toStrictEqual(null);
+
+      formula = new Formula('((A➔B)~(C∧D))())');
+      formula.root = formula.buildTree();
+      expect(formula.root).toStrictEqual(null);
+    });
+
     it('handles complex binary formula', () => {
       const formula = new Formula('((A➔B)~(C∧D))')
       formula.root = formula.buildTree();
