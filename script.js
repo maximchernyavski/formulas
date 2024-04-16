@@ -256,7 +256,7 @@ class Formula{
         temp = this.getSubFormula(ind, formula);
         ind = temp[1];
         if(operations.includes(formula[ind + 1])) return null; //Checking if there is operation after 2-nd operand.
-        if(!temp.length || formula[temp[1] + 1] != ')' && temp[1] + 1 === formula.length) return null;
+        if(!temp.length || !(formula[temp[1] + 1] === ')' && temp[1] + 1 === formula.length - 1)) return null;
         branch = this.buildTree(temp[0], depth);
         if(branch === null) return null;
         root.right = branch;
