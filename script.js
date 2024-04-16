@@ -235,7 +235,6 @@ class Formula{
                 branch = this.buildTree(temp2[0], depth); //Checks if subformula is correct formula.
                 if(branch === null) return null;
                 root.left = branch;
-                root.right = null;
                 return root;
             }
             if(!alphabet.has(formula[ind + 1])) return null;
