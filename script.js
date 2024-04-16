@@ -223,7 +223,7 @@ class Formula{
             return (alphabet.has(formula[ind]) && formula.length === 1) ? new FormulaTree(formula[ind], depth) : null;
         }
         let temp = this.getSubFormula(ind, formula); //Getting subformula.
-        if(!temp.length) return null; //Checks if subformula is correct.
+        if(!temp.length || formula[temp[1] + 1]) return null; //Checks if subformula is correct.
         const root = new FormulaTree(temp[0], depth);
         ind += 1;
         depth += 1;
@@ -257,7 +257,7 @@ class Formula{
         temp = this.getSubFormula(ind, formula);
         ind = temp[1];
         if(operations.includes(formula[ind + 1])) return null; //Checking if there is operation after 2-nd operand.
-        if(!temp.length) return null;
+        if(!temp.length || formula[temp[1] + 1] != ')' && temp[1] + 1 === formula.length) return null;
         branch = this.buildTree(temp[0], depth);
         if(branch === null) return null;
         root.right = branch;
