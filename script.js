@@ -1,6 +1,7 @@
 // Лабораторная работа N1 по дисциплине ЛОИС
-// Выполнена студенткой группы 221703 БГУИР Пикановой А.Д.
-// Выполнена студентом группы 221703 БГУИР Чернявским М.С.
+// Выполнена группой состоящей из: 
+//  Cтудентки группы 221703 БГУИР Пикановой А.Д.
+//  Cтудента группы 221703 БГУИР Чернявским М.С.
 // Алгоритмы, функции и классы для работы программы.
 
 /** @function initAlphabet
@@ -231,6 +232,7 @@ class Formula{
         if(formula[ind] === '!') { 
             if(formula[ind + 1] === '(') {
                 let temp2 = this.getSubFormula(ind+1, formula);
+                if(formula[temp2[1]+1] != ')') return null;
                 if(operations.includes(formula[temp2[1]+1])) return null;
                 branch = this.buildTree(temp2[0], depth); //Checks if subformula is correct formula.
                 if(branch === null) return null;
@@ -238,6 +240,8 @@ class Formula{
                 return root;
             }
             if(!alphabet.has(formula[ind + 1])) return null;
+            let temp2 = this.getSubFormula(ind+1, formula);
+            if(formula[temp2[1]+1] != ')') return null;
             branch = this.buildTree(formula[ind+1], depth);
             if(branch === null) return null;
             root.left = branch;
